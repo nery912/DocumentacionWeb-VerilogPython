@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verilog HDL - Guía Completa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo sutil para animar levemente los desplegables */
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="max-w-3xl mx-auto flex justify-between text-sm items-center">
+            <a href="verilog-vs-myhdl.html" class="font-bold text-blue-400 hover:underline">&larr; Volver a Paradigmas</a>
+            <span class="text-slate-400 text-xs">Ruta de Verilog</span>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 py-12 flex-grow w-full">
+        
+        <header class="mb-10">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-2">Hardware de IA, IoT y FPGA</span>
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">Todos los caminos conducen a Verilog</h1>
+            <p class="text-slate-600 leading-relaxed text-base">
+                Verilog es tu pasaporte a la revolución de los semiconductores. Ante la creciente demanda mundial en el diseño de circuitos integrados de aplicación específica (ASIC), el continuo crecimiento de las FPGA y las enormes oportunidades laborales, dominar este lenguaje es una decisión estratégica.
+            </p>
+        </header>
+
+        <section class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8">
+            <h2 class="text-xl font-bold text-slate-900 mb-3">❓ ¿Qué es Verilog HDL?</h2>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                Es el lenguaje de descripción de hardware más popular para definir el comportamiento o la funcionalidad lógica de un circuito. Con él, podés describir fácilmente sistemas digitales modernos como circuitos combinacionales, secuenciales, máquinas de estados finitos (FSM) y buses de datos. 
+            </p>
+            <p class="text-xs text-slate-400 mt-3 border-t pt-2 border-slate-100">
+                🛠️ Desarrollado originalmente en 1984, evolucionó hasta integrarse en SystemVerilog (IEEE-1800). Su versión estándar más reciente es la <strong>IEEE-1800-2023</strong>.
+            </p>
+        </section>
+
+        <div class="space-y-4">
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🛑 1. Requisitos Previos (Electrónica Digital)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    <p>Antes de escribir Verilog, necesitás entender los fundamentos lógicos. Todo será más fácil si comprendés sistemas numéricos, puertas lógicas, FSM y diagramas de temporización.</p>
+                    
+                    <div>
+                        <span class="font-semibold text-slate-900 block mb-1">Libros Recomendados:</span>
+                        <ul class="list-disc pl-5 text-xs space-y-1">
+                            <li><em>Diseño digital</em> – M. Morris Mano, Michael D. Ciletti</li>
+                            <li><em>Fundamentos digitales</em> – Thomas L. Floyd</li>
+                            <li><em>Principios y aplicaciones digitales</em> – Malvino, Leach, Saha</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <span class="font-semibold text-slate-900 block mb-1">Cursos en YouTube Gratuitos:</span>
+                        <ul class="list-disc pl-5 text-xs space-y-1 text-blue-600">
+                            <li><a href="https://www.youtube.com/@nesoacademy" target="_blank" class="hover:underline">Tutoriales de Electrónica Digital – Neso Academy</a></li>
+                            <li><a href="https://www.youtube.com" target="_blank" class="hover:underline">Digital Logic Design – Gate Smashers</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <span class="font-semibold text-slate-900 block mb-1">Simuladores Visuales Recomendados:</span>
+                        <p class="text-xs text-slate-500 mb-2">Ideales para probar compuertas antes de ir al código:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-100 px-2 py-1 rounded text-xs text-slate-700">Logisim Evolution</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-xs text-slate-700">CircuitVerse (Web)</span>
+                            <span class="bg-slate-100 px-2 py-1 rounded text-xs text-slate-700">Multisim Live</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>📑 2. Conceptos Esenciales que Debes Aprender Primero</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600">
+                    <p class="mb-3">Para diseñar circuitos complejos, debés dominar esta hoja de ruta de conceptos sintácticos:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Módulos y puertos:</strong> Bloques constructivos.</div>
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Tipos de datos:</strong> wire, reg, integer.</div>
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Bloques de procedimiento:</strong> always e initial.</div>
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Controles de tiempo:</strong> #delay, posedge, negedge.</div>
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Asignaciones:</strong> Bloqueantes vs No Bloqueantes.</div>
+                        <div class="bg-slate-50 p-2 rounded">🔹 <strong>Modelado:</strong> Flujo de datos y comportamiento.</div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🛠️ 3. Herramientas de Software y Simuladores (2026)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r">
+                        <span class="font-bold text-amber-900 text-xs block">💡 Recomendación para Principiantes:</span>
+                        <p class="text-xs text-amber-800 mt-0.5">Usa <strong>EDA Playground</strong>. Es un IDE basado en la nube totalmente gratuito donde podés simular Verilog desde tu navegador web sin instalar nada localmente.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs mt-2">
+                        <div class="p-3 bg-slate-50 rounded-xl">
+                            <span class="font-bold text-slate-900 block mb-2">🌐 Libres / Open-Source</span>
+                            <ul class="space-y-1 list-disc pl-4 text-slate-500">
+                                <li>Icarus Verilog</li>
+                                <li>Verilator</li>
+                                <li>GTKWave (Visor)</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl">
+                            <span class="font-bold text-slate-900 block mb-2">🏢 Estándar Industrial (Pagos)</span>
+                            <ul class="space-y-1 list-disc pl-4 text-slate-500">
+                                <li>ModelSim</li>
+                                <li>QuestaSim</li>
+                                <li>VCS (Alto Rendimiento)</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-xl">
+                            <span class="font-bold text-slate-900 block mb-2">☁️ Entornos Cloud</span>
+                            <ul class="space-y-1 list-disc pl-4 text-slate-500">
+                                <li>EDA Playground</li>
+                                <li>Makerchip</li>
+                                <li>WaveDrom (Formas de onda)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+
+        <div class="bg-slate-950 text-white rounded-2xl p-6 shadow-md flex flex-col sm:flex-row justify-between items-center gap-4 mt-12">
+            <div>
+                <h4 class="font-bold text-base mb-1">⚠️ ¿Problemas con la Compilación?</h4>
+                <p class="text-slate-400 text-xs">Revisá nuestra base de conocimientos con las dudas de sintaxis y los errores más comunes cometidos por estudiantes.</p>
+            </div>
+            <a href="verilog-faq.html" class="bg-blue-600 hover:bg-blue-500 transition text-white px-4 py-2 rounded-xl text-xs font-semibold shadow whitespace-nowrap">
+                Ver FAQ y Errores Comunes &rarr;
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
+        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
+        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
+    </footer>
+</body>
+</html>

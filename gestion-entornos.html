@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Entornos: PIP vs UV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between text-sm items-center">
+            <a href="index.html" class="font-bold text-blue-400 hover:underline">&larr; Volver al Inicio</a>
+            <span class="text-slate-400 text-xs uppercase tracking-wider">Módulo 01: Entornos de Trabajo</span>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        
+        <header class="mb-10 text-center md:text-left">
+            <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Evolución de Herramientas</span>
+            <h1 class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">Gestión de Proyectos Modernos en Python</h1>
+            <p class="text-slate-600 mt-2 max-w-2xl text-base">
+                La herramienta <strong>uv</strong> es un gestor de paquetes y proyectos de alta velocidad escrito en Rust. Integra en una sola solución todo lo que antes hacías de forma fragmentada.
+            </p>
+        </header>
+
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-10">
+            <div class="p-6 bg-slate-950 text-white">
+                <h3 class="text-lg font-bold">⚡ La Revolución Todo en Uno: PIP vs UV</h3>
+                <p class="text-slate-400 text-xs mt-1">Antes necesitabas un ecosistema roto de 6 herramientas separadas. Ahora usás una sola.</p>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 text-xs font-bold uppercase border-b border-slate-200">
+                            <th class="p-4">Característica</th>
+                            <th class="p-4">El Flujo Viejo (PIP / Otros)</th>
+                            <th class="p-4 bg-blue-50/50 text-blue-900">El Flujo Moderno (UV)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-slate-600 text-xs md:text-sm">
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-900">Velocidad</td>
+                            <td class="p-4">Instalación lenta basada en Python puro.</td>
+                            <td class="p-4 bg-blue-50/30 text-slate-900 font-medium">⚡ Ultra veloz (Escrito en Rust).</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-900">Versiones de Python</td>
+                            <td class="p-4">Requiere herramientas como <code>pyenv</code>.</td>
+                            <td class="p-4 bg-blue-50/30 text-slate-900">Descarga y gestiona entornos de Python de forma nativa.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-900">Entornos Virtuales</td>
+                            <td class="p-4">Creación manual con <code>virtualenv</code> o <code>venv</code>.</td>
+                            <td class="p-4 bg-blue-50/30 text-slate-900">Gestión e inicialización 100% automática.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-900">Bloqueo de Entorno</td>
+                            <td class="p-4">Manual mediante archivos <code>requirements.txt</code>.</td>
+                            <td class="p-4 bg-blue-50/30 text-slate-900">Automatizado mediante <code>uv.lock</code> transitable.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-semibold text-slate-900">Distribución</td>
+                            <td class="p-4">Requiere <code>poetry</code>, <code>flit</code> o <code>twine</code> para publicar.</td>
+                            <td class="p-4 bg-blue-50/30 text-slate-900">Compila y publica paquetes directo a PyPI.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="space-y-4">
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🛠️ Características Clave de UV</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-xs md:text-sm text-slate-600 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-slate-50 p-3 rounded-lg">🚀 <strong>Instalación ultra rápida:</strong> Ideal para árboles grandes de dependencias.</div>
+                    <div class="bg-slate-50 p-3 rounded-lg">📁 <strong>Inicialización de proyectos:</strong> Genera la estructura base y el repositorio Git de un tiro.</div>
+                    <div class="bg-slate-50 p-3 rounded-lg">🔒 <strong>Gestión Avanzada:</strong> Rastrea dependencias directas y transitivas automáticamente.</div>
+                    <div class="bg-slate-50 p-3 rounded-lg">🧪 <strong>Soporte Dev:</strong> Instala y corre herramientas satélites en aislamiento (como Ruff, Black o pytest).</div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" open>
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🚀 Creación de un Proyecto Python con UV</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    <p>Navegá hasta tu directorio de trabajo y ejecutá el comando inicializador:</p>
+                    <pre class="bg-slate-900 text-slate-200 p-3 rounded-xl font-mono text-xs shadow-inner">uv init ejemplo</pre>
+                    
+                    <p class="font-semibold text-slate-900 text-xs uppercase tracking-wider mt-4">La Estructura Generada Automáticamente:</p>
+                    <pre class="bg-slate-950 text-slate-300 p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed">
+ejemplo/
+├── .git/               # Repositorio Git inicializado automáticamente
+├── .gitignore          # Configurado con exclusiones estándar de Python
+├── .python-version     # Define qué versión exacta de Python usará el proyecto
+├── README.md           # Archivo de documentación vacío
+├── main.py             # Script marcador de posición
+└── pyproject.toml      # Configuración del proyecto y sus dependencias</pre>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mt-2">
+                        <div class="border p-3 rounded-xl bg-white">
+                            <span class="font-mono font-bold text-slate-900 block mb-1">📄 main.py</span>
+                            <pre class="bg-slate-50 p-2 rounded text-[10px]">def main():\n    print("Hello from ejemplo!")\n\nif __name__ == "__main__":\n    main()</pre>
+                        </div>
+                        <div class="border p-3 rounded-xl bg-white">
+                            <span class="font-mono font-bold text-slate-900 block mb-1">📄 pyproject.toml</span>
+                            <pre class="bg-slate-50 p-2 rounded text-[10px]">[project]\nname = "ejemplo"\nversion = "0.1.0"\nrequires-python = ">=3.13"\ndependencies = []</pre>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🔄 Migración de Proyectos Existentes y requirements.txt</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    
+                    <div>
+                        <span class="font-bold text-slate-900 text-xs block mb-1">Caso A: El proyecto ya existe pero no usa UV</span>
+                        <p class="text-xs text-slate-500 mb-2">Entrá a la carpeta y ejecutá el comando base. Creará la infraestructura sin tocar tu <code>main.py</code> ni tu repositorio Git previo (no funcionará si ya tenés un <code>pyproject.toml</code> activo):</p>
+                        <pre class="bg-slate-900 text-slate-200 p-2.5 rounded-lg font-mono text-xs">uv init</pre>
+                    </div>
+
+                    <div class="pt-2">
+                        <span class="font-bold text-slate-900 text-xs block mb-1">Caso B: Migrar desde un requirements.txt viejo</span>
+                        <p class="text-xs text-slate-500 mb-2">Importá instantáneamente todas tus librerías previas directo al control de uv:</p>
+                        <pre class="bg-slate-900 text-slate-200 p-2.5 rounded-lg font-mono text-xs">uv add -r requirements.txt</pre>
+                    </div>
+
+                    <div class="bg-slate-900 text-slate-400 p-4 rounded-xl text-xs space-y-2">
+                        <p><strong class="text-white">🔹 Dependencias Directas:</strong> Paquetes declarados explícitamente (ej. Tu app requiere <code>requests</code>).</p>
+                        <p><strong class="text-white">🔹 Dependencias Transitivas:</strong> Librerías secundarias que dan soporte a las directas (ej. <code>requests</code> necesita internamente de <code>urllib3</code>). Uv las maneja y aísla solas dentro del ecosistema.</p>
+                    </div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🔒 Bloqueo y Sincronización Automática (Garantía de Entorno)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>Uv remueve el error clásico de <em>"en mi máquina andaba pero en la tuya no"</em> usando dos procesos automatizados:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-xs text-slate-600">
+                        <li><strong>El Bloqueo (uv.lock):</strong> Captura las versiones exactas, la arquitectura del sistema operativo y las distribuciones de Python utilizadas en tu entorno de desarrollo para asegurar una reproducibilidad matemática exacta en cualquier otra computadora.</li>
+                        <li><strong>La Sincronización:</strong> Instala y purga paquetes en caliente. Al ejecutar comandos mediante <code>uv run</code>, el sistema audita, bloquea y sincroniza automáticamente las librerías antes de arrancar, manteniendo tu sandbox impecable sin intervenciones manuales.</li>
+                    </ul>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
+        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
+        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
+    </footer>
+</body>
+</html>

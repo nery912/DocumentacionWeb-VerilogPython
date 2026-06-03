@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter - Atajos y Trucos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between text-sm items-center">
+            <a href="jupyter-vscode.html" class="font-bold text-blue-400 hover:underline">&larr; Volver a Conceptos</a>
+            <span class="text-slate-400 text-xs uppercase tracking-wider">Productividad Pura</span>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 py-12 flex-grow w-full">
+        <h1 class="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Atajos de Teclado y Trucos Pro</h1>
+        <p class="text-slate-500 text-sm mb-8">El mouse te vuelve lento. Usá estas combinaciones nativas de VS Code para gestionar tus celdas de simulación a la velocidad del pensamiento.</p>
+
+        <section class="mb-12">
+            <h2 class="text-xl font-bold text-slate-900 mb-3">⌨️ Comando Universales (Modo Comando)</h2>
+            <p class="text-slate-600 text-xs mb-4"><em>Nota: Hacé un clic fuera del cuadro de texto de una celda para entrar en Modo Comando (el borde cambiará de color) antes de presionar estas teclas:</em></p>
+            
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+                <table class="min-w-full divide-y divide-slate-200 text-xs md:text-sm">
+                    <thead class="bg-slate-950 text-white">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold">Acción</th>
+                            <th class="px-4 py-3 text-left font-semibold">Combinación</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-slate-600">
+                        <tr>
+                            <td class="px-4 py-3 font-medium text-slate-900">Ejecutar celda activa</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-1.5 py-0.5 rounded font-mono text-xs font-bold shadow-sm">Ctrl + Enter</kbd></td>
+                        </tr>
+                        <tr class="bg-slate-50/50">
+                            <td class="px-4 py-3 font-medium text-slate-900">Ejecutar e ir a la celda de abajo</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-1.5 py-0.5 rounded font-mono text-xs font-bold shadow-sm">Shift + Enter</kbd></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium text-slate-900">Crear una nueva celda arriba</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-2 py-0.5 rounded font-mono text-xs font-bold shadow-sm">A</kbd> <span class="text-xs text-slate-400 font-sans ml-1">(Above)</span></td>
+                        </tr>
+                        <tr class="bg-slate-50/50">
+                            <td class="px-4 py-3 font-medium text-slate-900">Crear una nueva celda abajo</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-2 py-0.5 rounded font-mono text-xs font-bold shadow-sm">B</kbd> <span class="text-xs text-slate-400 font-sans ml-1">(Below)</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium text-slate-900">Eliminar la celda seleccionada</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-1.5 py-0.5 rounded font-mono text-xs font-bold shadow-sm">D , D</kbd> <span class="text-xs text-slate-400 font-sans ml-1">(Presionar D dos veces)</span></td>
+                        </tr>
+                        <tr class="bg-slate-50/50">
+                            <td class="px-4 py-3 font-medium text-slate-900">Transformar celda a Texto (Markdown)</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-2 py-0.5 rounded font-mono text-xs font-bold shadow-sm">M</kbd></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium text-slate-900">Transformar celda a Código de nuevo</td>
+                            <td class="px-4 py-3"><kbd class="bg-slate-100 border px-2 py-0.5 rounded font-mono text-xs font-bold shadow-sm">Y</kbd></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="space-y-4">
+            <h2 class="text-xl font-bold text-slate-900 mb-1">💡 Funcionalidades del IDE que tenés que usar</h2>
+            
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <span class="font-bold text-slate-900 text-sm block mb-1">🕵️‍♂️ El panel de variables en caliente</span>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                    Arriba, en la barra de herramientas de la Notebook en VS Code, hay un ícono con forma de tabla llamado <strong>Variables</strong>. Al presionarlo, se despliega una consola inferior que rastrea de forma dinámica todas tus señales de MyHDL, arreglos e índices binarios. Te permite auditar el estado exacto de la CPU sin ensuciar tus celdas llenándolas de impresiones de pantalla (<code>print</code>).
+                </p>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <span class="font-bold text-slate-900 text-sm block mb-1">✨ Auto-formateo instantáneo</span>
+                <p class="text-slate-600 text-xs leading-relaxed">
+                    Si tu código te quedó desordenado o mal indentado dentro de una celda, no lo arregles a mano. Presioná <kbd class="bg-slate-100 border px-1 rounded text-[10px] font-bold font-mono">Shift + Alt + F</kbd> y VS Code aplicará las reglas estéticas estándar (PEP8) alineando todo de forma automática en un segundo.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
+        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
+        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
+    </footer>
+</body>
+</html>

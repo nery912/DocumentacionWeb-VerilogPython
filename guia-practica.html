@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Práctica: Laboratorio de CPU con MyHDL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between text-sm items-center">
+            <a href="index.html" class="font-bold text-blue-400 hover:underline">&larr; Volver al Inicio</a>
+            <span class="text-slate-400 text-xs uppercase tracking-wider">Módulo Práctico Avanzado</span>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
+        
+        <header class="mb-10">
+            <span class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Proyecto Completo</span>
+            <h1 class="text-3xl font-extrabold text-slate-900 mt-3 tracking-tight">Simulador Interactivo de una CPU en Hardware</h1>
+            <p class="text-slate-600 mt-2 text-base leading-relaxed">
+                En esta guía vas a construir paso a paso un procesador segmentado por software capaz de ejecutar instrucciones binarias, simular flancos de reloj interactivos mediante Widgets en Jupyter, registrar los estados del procesador en JSON y graficar los picos del acumulador con Matplotlib.
+            </p>
+        </header>
+
+        <section class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-10">
+            <h2 class="text-lg font-bold text-slate-900 mb-2">🗺️ Brújula del Proyecto: Estructura de Archivos</h2>
+            <p class="text-xs text-slate-500 mb-4">Esta es la disposición exacta que debe tener tu espacio de trabajo en VS Code al finalizar el tutorial:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <pre class="bg-slate-950 text-slate-300 p-4 rounded-xl font-mono text-xs leading-relaxed shadow-inner border border-slate-800">
+HARDWARE_PYTHON_VERILOG/
+├── .venv/                   <span class="text-emerald-500"># Creado automáticamente por UV</span>
+├── NOTEBOOKS/               <span class="text-amber-500"># Tu laboratorio de pruebas</span>
+│   ├── 01_Importaciones.ipynb
+│   ├── 02_Simulacion.ipynb
+│   └── 03_Analisis.ipynb
+├── src/                     <span class="text-blue-400"># Núcleo del hardware físico</span>
+│   ├── __init__.py
+│   └── Hardware_logic.py
+├── .gitignore
+├── .python-version
+├── main.py
+├── pyproject.toml           <span class="text-purple-400"># Configuración de dependencias</span>
+├── README.md
+├── requirements.txt
+└── uv.lock</pre>
+                
+                <div class="text-xs space-y-3 flex flex-col justify-center">
+                    <div class="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+                        <strong class="text-emerald-900 block mb-0.5">✨ Automatizado por UV:</strong>
+                        <p class="text-slate-600 text-[11px]">La carpeta <code>.venv/</code>, el archivo de bloqueo determinista <code>uv.lock</code>, la asignación de versiones de Python y las descargas pesadas de paquetes como <code>ipywidgets</code> o <code>matplotlib</code> se inicializan solas.</p>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <strong class="text-blue-900 block mb-0.5">✍️ Creado por Vos de forma manual:</strong>
+                        <p class="text-slate-600 text-[11px]">La carpeta de lógica pura (<code>src/</code>), el archivo estructurado del core de la CPU y los tres cuadernos de Jupyter independientes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="space-y-4">
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🚀 Paso 1: Inicialización con UV y Dependencias</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    <p>Usa <strong>uv</strong> para armar el entorno de aislamiento limpio de forma instantánea. Abre la terminal en la carpeta raíz y ejecuta:</p>
+                    <pre class="bg-slate-900 text-slate-200 p-3 rounded-lg font-mono text-xs">uv init hardware-python-verilog</pre>
+                    <p>Reemplaza tu archivo <code>pyproject.toml</code> con este bloque para declarar las dependencias de control gráfico y hardware:</p>
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+[project]
+name = "hardware-python-verilog"
+version = "0.1.0"
+description = "Simulador interactivo de CPU con MyHDL y Python"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "ipywidgets>=8.1.8",
+    "matplotlib>=3.10.9",
+    "myhdl>=0.11.51",
+    "pandas>=3.0.3",
+]</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>💾 Paso 2: El Corazón Físico (src/Hardware_logic.py)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>Crea la carpeta <code>src/</code> y añade un archivo vacío llamado <code>__init__.py</code> para indicarle a Python que es un paquete interno. Luego, crea <code>Hardware_logic.py</code> y pega el diseño de hardware basado en la FSM (Máquina de Estados Finitos):</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+from myhdl import block, always_seq, Signal
+from enum import Enum
+
+class State(Enum):
+    FETCH = 0
+    DECODE = 1
+    EXECUTE = 2
+    WRITEBACK = 3
+
+@block
+def cpu_core(clk, pc, acc, input_reg, fsm_state_out):
+    state = Signal(State.FETCH)
+    
+    @always_seq(clk.posedge, reset=None)
+    def fsm():
+        fsm_state_out.next = state
+        if state == State.FETCH:
+            state.next = State.DECODE
+        elif state == State.DECODE:
+            state.next = State.EXECUTE
+        elif state == State.EXECUTE:
+            acc.next = acc + input_reg  # Operación de la ALU
+            state.next = State.WRITEBACK
+        elif state == State.WRITEBACK:
+            pc.next = pc + 1
+            state.next = State.FETCH
+    return fsm</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>📓 Paso 3: Cuaderno 01 - Diagnóstico de Entorno</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>Crea la carpeta <code>NOTEBOOKS/</code>. En tu primer archivo <code>01_Importaciones.ipynb</code>, coloca la siguiente celda de verificación de salud de MyHDL:</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+# Celda 1: Verifica que tu entorno funciona
+import myhdl
+print(f"MyHDL cargado correctamente. Versión: {myhdl.__version__}")</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🕹️ Paso 4: Cuaderno 02 - Simulador Interactivo de CPU</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>Este es el núcleo dinámico de tu laboratorio. En <code>02_Simulacion.ipynb</code>, pega el simulador reactivo con control de flancos de subida. Generará automáticamente un log de telemetría llamado <code>cpu_log.json</code>:</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner max-h-96 overflow-y-scroll">
+import sys
+import os
+import json
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+from myhdl import Signal, intbv, Simulation, delay, always, now
+
+# Configuración de ruta hacia la lógica de hardware interna
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '..')))
+from src.Hardware_logic import cpu_core, State
+
+class Hardwired_Simulator:
+    def __init__(self):
+        self.clk = Signal(bool(0))
+        self.pc = Signal(intbv(0))
+        self.acc = Signal(intbv(0))
+        self.input_reg = Signal(intbv(0))
+        self.state_out = Signal(State.FETCH)
+        self.historial = []
+        
+        self.dut = cpu_core(self.clk, self.pc, self.acc, self.input_reg, self.state_out)
+        
+        @always(delay(10))
+        def clkgen():
+            self.clk.next = not self.clk
+        self.sim = Simulation(self.dut, clkgen)
+        
+        self.op_a = 0
+        self.op_b = 0
+        self.ciclo_instruccion = 1  
+        self.terminado = False
+
+    def reset_hardware(self, op_a, op_b):
+        self.op_a = op_a
+        self.op_b = op_b
+        self.ciclo_instruccion = 1
+        self.terminado = False
+        self.historial = []
+        
+        self.pc.next = 0
+        self.acc.next = 0
+        self.input_reg.next = 0
+        self.state_out.next = State.FETCH
+        self.sim.run(1) 
+
+    def avanzar_un_estado(self):
+        if self.terminado:
+            return
+        
+        if self.ciclo_instruccion == 1:
+            self.input_reg.next = self.op_a
+        elif self.ciclo_instruccion == 2:
+            self.input_reg.next = self.op_b
+            
+        estado_previo = self.state_out.val
+        
+        while self.state_out.val == estado_previo:
+            self.sim.run(1)
+            
+        if self.state_out.val == State.FETCH:
+            if self.ciclo_instruccion == 1:
+                self.ciclo_instruccion = 2  
+            elif self.ciclo_instruccion == 2:
+                self.terminado = True  
+
+        self.historial.append({
+            'Tiempo': f"{now()} ns",
+            'Estado': self.state_out.val.name,
+            'PC': int(self.pc),
+            'ACC': int(self.acc),
+            'Input': int(self.input_reg)
+        })
+        with open('cpu_log.json', 'w') as f:
+            json.dump(self.historial, f)
+
+# --- INTERFAZ GRÁFICA ---
+simulador = Hardwired_Simulator()
+
+txt_a = widgets.IntText(description='Valor 1:', value=6)
+txt_b = widgets.IntText(description='Valor 2:', value=7)
+btn_init = widgets.Button(description="1. Reset (0 ns)", button_style='warning')
+btn_next = widgets.Button(description="2. Siguiente Flanco", button_style='primary', disabled=True)
+out_panel = widgets.Output()
+
+def iniciar_sim(b):
+    simulador.reset_hardware(txt_a.value, txt_b.value)
+    btn_next.disabled = False
+    with out_panel:
+        clear_output(wait=True)
+        print(f"=== ⏱️ INSTANTE CERO: ESTADO DE RESET (0 ns) ===")
+        print(f"REGISTROS: PC = 0 | ACC = 0 | INPUT_REG = 0 | ESTADO = FETCH")
+        print("-" * 65)
+        print("⚙️ LÍNEA DE TIEMPO DIGITAL:")
+        print(f" ▶ Circuito inicializado. El bus espera recibir el Valor 1 ({txt_a.value}).")
+        print("=" * 65)
+
+def procesar_paso(b):
+    tiempo_origen = now()
+    estado_origen = simulador.state_out.val.name
+    ciclo_origen = simulador.ciclo_instruccion
+    
+    simulador.avanzar_un_estado()
+    
+    with out_panel:
+        clear_output(wait=True)
+        print(f"=== ⏱️ TIEMPO DE SIMULACIÓN: {tiempo_origen} ns ──▶ {now()} ns ===")
+        print(f"TRANSICIÓN DE ESTADO: {estado_origen} ──▶ {simulador.state_out.val.name}")
+        print(f"REGISTROS EN FLANCO: PC = {int(simulador.pc)} | ACC = {int(simulador.acc)} | INPUT_REG = {int(simulador.input_reg)}")
+        print("-" * 65)
+        print("⚙️ LÓGICA INTERNA DE LOS COMPONENTES:")
+        
+        if ciclo_origen == 1:
+            print(f" └─ [CICLO 1: CARGANDO VALOR 1 ({simulador.op_a})]")
+            if estado_origen == "DECODE":
+                print(f"   ▶ ALU (Combinacional): ACC (0) + INPUT ({simulador.op_a}) = {simulador.op_a}")
+            elif estado_origen == "EXECUTE":
+                print(f"   ▶ Buses: El valor acumulado inicial ({simulador.op_a}) se transfiere.")
+            elif estado_origen == "WRITEBACK":
+                print(f"   💾 Registro: El ACC se actualiza con el primer operando: {simulador.op_a}")
+        else:
+            print(f" └─ [CICLO 2: SUMANDO VALOR 2 ({simulador.op_b})]")
+            if estado_origen == "DECODE":
+                print(f"   ▶ ALU (Combinacional): Operando real: ACC ({simulador.op_a}) + INPUT ({simulador.op_b}) = {simulador.op_a + simulador.op_b}")
+            elif estado_origen == "EXECUTE":
+                print(f"   ▶ Buses: El resultado neto de la suma ({simulador.op_a + simulador.op_b}) se estabiliza.")
+            elif estado_origen == "WRITEBACK":
+                print(f"   💾 Registro: El ACC captura la salida definitiva de la ALU.")
+
+        print("=" * 65)
+        
+        if simulador.terminado:
+            btn_next.disabled = True
+            print("\n🛑 [HALT] SIMULACIÓN TERMINADA CON ÉXITO")
+            print(f" Resultado final retenido en el ACC de forma estable: {simulador.op_a} + {simulador.op_b} = {int(simulador.acc)}")
+
+btn_init.on_click(iniciar_sim)
+btn_next.on_click(procesar_paso)
+display(widgets.HBox([txt_a, txt_b]), widgets.HBox([btn_init, btn_next]), out_panel)</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>📊 Paso 5: Cuaderno 03 - Análisis Metrológico y Gráficas</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>En el último archivo <code>03_Analisis.ipynb</code>, lee la telemetría del archivo JSON generado dinámicamente y plotea la respuesta del acumulador usando un gráfico de pasos (Step Plot):</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+
+try:
+    with open('cpu_log.json', 'r') as f:
+        datos = json.load(f)
+    
+    df = pd.DataFrame(datos)
+    print("--- REPORTE DE EJECUCIÓN (PASO A PASO) ---")
+    for index, row in df.iterrows():
+        print(f"Paso {index} | Estado: {row['Estado']} | ACC: {row['ACC']}")
+        print("-" * 40)
+        
+    # Graficar comportamiento eléctrico discreto
+    plt.figure(figsize=(10, 4))
+    plt.step(df.index, df['ACC'], where='post', marker='o', color='red')
+    plt.title("Evolución del ACC durante la ejecución paso a paso")
+    plt.xlabel("Estado de la máquina")
+    plt.ylabel("Valor del ACC")
+    plt.grid(True)
+    plt.show()
+
+except FileNotFoundError:
+    print("No se encontró 'cpu_log.json'. Ejecuta la simulación interactiva primero.")</pre>
+                </div>
+            </details>
+
+        </div>
+
+       <section class="mt-12 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <header class="mb-8 border-b border-slate-100 pb-4">
+                <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <span>📺 Secuencia de Validación en Tiempo Real</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">
+                    Usa esta guía visual para comprobar el estado de los registros, buses de la ALU y flancos de reloj síncronos en cada paso de la ejecución.
+                </p>
+            </header>
+
+            <div class="space-y-10 relative before:absolute before:inset-0 before:left-4 before:w-0.5 before:bg-slate-100">
+                
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-slate-400 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">1. Estado Inicial del Panel</h3>
+                    <p class="text-xs text-slate-500 mb-3">La interfaz gráfica de usuario (GUI) carga los valores por defecto (Valor 1: 6, Valor 2: 7) con el botón de flanco deshabilitado hasta inicializar el hardware.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-01-inicio.png" alt="Carga Inicial de la GUI" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-amber-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">2. Instante Cero: Estado de Reset (0 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Al presionar <span class="text-amber-600 font-semibold">1. Reset</span>, el circuito limpia sus registros internos de manera asíncrona. La FSM se posiciona en FETCH esperando la primera orden de muestreo.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-02-Estado-reset(ns0).png" alt="Instante Cero: Reset" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-blue-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">3. Ciclo 1: Entrada en Modo FETCH (30 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Primer flanco de subida. Se lee la instrucción binaria y las líneas lógicas de control preparan la lectura del primer operando del bus de datos.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-03-Estado-fetch(ns30).png" alt="Ciclo 1: Fetch" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-blue-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">4. Ciclo 1: Decodificación y Carga de Entrada (50 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">La FSM pasa a DECODE. El registro de entrada de hardware copia de forma limpia el primer operando: <code class="bg-slate-100 px-1 rounded text-purple-700 font-mono">INPUT_REG = 6</code>.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-04-Estado-Decode(ns50).png" alt="Ciclo 1: Decode" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-blue-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">5. Ciclo 1: Estabilización Combinacional de la ALU (70 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Fase EXECUTE. La ALU calcula de forma combinacional instantánea en base a los canales actuales: <code class="font-mono text-slate-700">ACC (0) + INPUT (6) = 6</code>.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-05-Estado-Execute(ns70).png" alt="Ciclo 1: Execute" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-blue-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">6. Ciclo 1: Escritura Síncrona en el Acumulador (90 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Fase WRITEBACK. El flanco síncrono impacta el resultado de la ALU directamente en el flip-flop del acumulador (<code class="font-mono text-slate-700">ACC = 6</code>). El contador de programa cambia a PC = 1.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-06-Estado-Writeback(ns90).png" alt="Ciclo 1: Writeback" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-purple-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">7. Ciclo 2: Búsqueda de la Siguiente Instrucción (110 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Comienza la segunda vuelta de la FSM (FETCH). El sistema detecta que el ciclo uno concluyó de forma correcta y conmuta las líneas lógicas para operar con el segundo valor.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-07-Estado-Fetch-ciclo2(ns110).png" alt="Ciclo 2: Fetch" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-purple-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">8. Ciclo 2: Decodificación y Carga de Entrada Dos (130 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">La máquina entra en DECODE para el ciclo dos. El bus de entrada se actualiza de forma segura al segundo operando: <code class="bg-slate-100 px-1 rounded text-purple-700 font-mono">INPUT_REG = 7</code>.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-08-EstadoDecode-ciclo2(ns130).png" alt="Ciclo 2: Decode" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-purple-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-slate-900">9. Ciclo 2: Suma Neta Estabilizada en la ALU (150 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Fase EXECUTE del ciclo dos. Las compuertas de la ALU procesan los dos estados retenidos en vivo: <code class="font-mono text-slate-700">ACC (6) + INPUT (7) = 13</code>.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-09-estado-execute-ciclo2(ns150).png" alt="Ciclo 2: Execute" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="relative pl-8 group">
+                    <div class="absolute left-2.5 top-1.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-4 border-white shadow-sm"></div>
+                    <h3 class="text-sm font-bold text-emerald-900">10. [HALT] Finalización de la Simulación (170 ns)</h3>
+                    <p class="text-xs text-slate-500 mb-3">La FSM concluye la secuencia completa. El botón de avance se deshabilita automáticamente y el resultado neto queda perfectamente enclavado de forma estable en el acumulador físico.</p>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm max-w-xl bg-slate-50 transition hover:shadow-md">
+                        <img src="img/sim-10-fin(ns170).png" alt="Halt: Simulación Terminada" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
+        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
+        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
+    </footer>
+</body>
+</html>

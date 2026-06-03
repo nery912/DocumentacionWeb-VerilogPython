@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHDL - Guía Práctica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo sutil para animar levemente los desplegables */
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
+
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="max-w-3xl mx-auto flex justify-between text-sm items-center">
+            <a href="verilog-vs-myhdl.html" class="font-bold text-blue-400 hover:underline">&larr; Volver a Paradigmas</a>
+            <span class="text-slate-400 text-xs">Ruta de MyHDL</span>
+        </div>
+    </nav>
+
+    <main class="max-w-3xl mx-auto px-4 py-12 flex-grow w-full">
+        
+        <header class="mb-10">
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-widest block mb-2">Ecosistema Python de Alto Nivel</span>
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">Introducción a MyHDL</h1>
+            <p class="text-slate-600 leading-relaxed text-base">
+                MyHDL es una biblioteca de Python de código abierto que redefine la descripción de hardware. Te permite modelar y verificar lógica digital compleja utilizando la sintaxis limpia de Python, para luego compilar automáticamente tu diseño a Verilog o VHDL optimizado y listo para síntesis en FPGAs.
+            </p>
+        </header>
+
+        <div class="space-y-4">
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" open>
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>📦 1. Configuración del Entorno e Instalación</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-4">
+                    <p>Para empezar, necesitas tener instalado Python (versión 3.x o superior). Podés gestionar la instalación de la librería usando el gestor tradicional o herramientas modernas de alto rendimiento:</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-slate-900 text-slate-200 p-3 rounded-lg font-mono text-xs relative">
+                            <span class="text-[10px] text-slate-500 block mb-1"># Opción estándar con PIP:</span>
+                            <span class="text-emerald-400">pip</span> install myhdl
+                        </div>
+                        <div class="bg-slate-900 text-slate-200 p-3 rounded-lg font-mono text-xs relative">
+                            <span class="text-[10px] text-blue-400 block mb-1"># Opción rápida con UV (Recomendado):</span>
+                            <span class="text-blue-400">uv</span> pip install myhdl
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>💡 2. Implementación: Un Intermitente LED (Blinker)</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>El circuito para hacer parpadear un LED es el "Hola Mundo" de las FPGAs. Usaremos una señal de reloj (<code>clock</code>) para sincronizar eventos e incrementar un contador que conmute el estado del LED a intervalos específicos:</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+from myhdl import block, always_seq, Signal, intbv
+
+@block
+def led_blinker(clock, led):
+    # Contador de 24 bits para controlar la velocidad del parpadeo
+    counter = Signal(intbv(0)[24:])  
+    
+    @always_seq(clock.posedge, reset=None)
+    def blink():
+        # Conmuta el LED al alcanzar el valor máximo del contador
+        if counter == counter.max - 1:
+            led.next = not led
+            counter.next = 0
+        else:
+            counter.next = counter + 1
+            
+    return blink</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>🧪 3. Ejecutar una Simulación Nativa</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+                </summary>
+                <div class="p-4 border-t border-slate-100 text-sm text-slate-600 space-y-3">
+                    <p>MyHDL te permite simular y verificar tu diseño directamente desde scripts de Python, eliminando por completo la necesidad de abrir pesados entornos de software de FPGA en las primeras fases de prueba:</p>
+                    
+                    <pre class="bg-slate-900 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner">
+from myhdl import Simulation, delay, instance
+
+# Definición de señales lógicas
+clock = Signal(0)
+led = Signal(0)
+
+# Instanciamos nuestro módulo blinker
+blink_inst = led_blinker(clock, led)
+
+# Generador de estímulo de reloj asincrónico
+@instance
+def clock_gen():
+    while True:
+        clock.next = not clock
+        yield delay(10)  # Invierte el reloj cada 10 unidades de tiempo
+
+# Lanzamos el motor de simulación interno
+sim = Simulation(blink_inst, clock_gen)
+sim.run(200)  # Corre por 200 unidades de tiempo</pre>
+                </div>
+            </details>
+
+            <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
+                <summary class="p-4 font-bold text-slate-900 cursor-pointer hover:bg-slate-50 flex justify-between items-center transition list-none">
+                    <span>⚡ 4. Conversión Directa a Verilog o VHDL</span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Sim - Documentación Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="font-bold text-lg tracking-wider text-blue-400">⚡ PYTHON_MyHDL_VERILOG</a>
+            <div class="space-x-4 text-sm font-medium">
+                <a href="gestion-entornos.html" class="hover:text-blue-400 transition">Entornos</a>
+                <a href="jupyter-vscode.html" class="hover:text-blue-400 transition">Jupyter</a>
+                <a href="verilog-vs-myhdl.html" class="hover:text-blue-400 transition">Verilog vs MyHDL</a>
+                <a href="guia-practica.html" class="bg-blue-600 px-3 py-1.5 rounded text-white hover:bg-blue-500 transition">Guía Práctica</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white py-20 text-center px-4">
+        <div class="max-w-4xl mx-auto">
+            <span class="bg-blue-500/10 text-blue-400 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-widest">Documentación Abierta</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 leading-tight">Simulación de una CPU Elemental mediante Python y MyHDL</h1>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto">Un enfoque moderno de diseño de hardware digital sin la verbosidad de los lenguajes HDL tradicionales, integrado en entornos deterministas interactivos.</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="text-2xl font-bold text-slate-900 text-center mb-12">Módulos de Aprendizaje</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="text-blue-600 font-bold text-xl mb-3">📦 01. Entornos</div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Teoría del determinismo, gestión de dependencias con UV, archivos pyproject.toml y mitigación de degradación de entornos.</p>
+                </div>
+                <a href="gestion-entornos.html" class="text-blue-600 text-sm font-semibold mt-6 block hover:underline">Estudiar módulo &rarr;</a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="text-blue-600 font-bold text-xl mb-3">📓 02. Jupyter Lab</div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Configuración de kernels interactivos y renderizado reactivo con Ipywidgets dentro de Visual Studio Code.</p>
+                </div>
+                <a href="jupyter-vscode.html" class="text-blue-600 text-sm font-semibold mt-6 block hover:underline">Estudiar módulo &rarr;</a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="text-blue-600 font-bold text-xl mb-3">🛠️ 03. Paradigmas</div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Comparativa técnica detallada: El flujo descriptivo de Verilog frente al ecosistema ágil y asincrónico de MyHDL.</p>
+                </div>
+                <a href="verilog-vs-myhdl.html" class="text-blue-600 text-sm font-semibold mt-6 block hover:underline">Estudiar módulo &rarr;</a>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="text-emerald-600 font-bold text-xl mb-3">🚀 04. Laboratorio</div>
+                    <p class="text-slate-600 text-sm leading-relaxed">Guía práctica paso a paso desde cero para inicializar el proyecto real, levantar la UI y correr los ciclos de la CPU.</p>
+                </div>
+                <a href="guia-practica.html" class="text-emerald-600 text-sm font-semibold mt-6 block hover:underline">Iniciar Práctica &rarr;</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2">
+        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
+        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
+    </footer>
+</body>
+</html>
