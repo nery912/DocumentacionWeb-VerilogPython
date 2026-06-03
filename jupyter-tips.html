@@ -8,22 +8,30 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
 
-    <nav class="bg-slate-900 text-white p-4 shadow-md">
-        <div class="max-w-4xl mx-auto flex justify-between text-sm items-center">
+    <nav class="bg-slate-900 text-white p-4 shadow-md px-4">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between text-sm items-center gap-2 text-center">
             <a href="jupyter-vscode.html" class="font-bold text-blue-400 hover:underline">&larr; Volver a Conceptos</a>
             <span class="text-slate-400 text-xs uppercase tracking-wider">Productividad Pura</span>
         </div>
     </nav>
 
     <main class="max-w-3xl mx-auto px-4 py-12 flex-grow w-full">
-        <h1 class="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Atajos de Teclado y Trucos Pro</h1>
-        <p class="text-slate-500 text-sm mb-8">El mouse te vuelve lento. Usá estas combinaciones nativas de VS Code para gestionar tus celdas de simulación a la velocidad del pensamiento.</p>
+        <header class="mb-8 text-center md:text-left">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2 tracking-tight break-words">
+                Atajos de Teclado y Trucos Pro
+            </h1>
+            <p class="text-slate-500 text-sm max-w-2xl mx-auto md:mx-0">
+                El mouse te vuelve lento. Usá estas combinaciones nativas de VS Code para gestionar tus celdas de simulación a la velocidad del pensamiento.
+            </p>
+        </header>
 
         <section class="mb-12">
-            <h2 class="text-xl font-bold text-slate-900 mb-3">⌨️ Comando Universales (Modo Comando)</h2>
-            <p class="text-slate-600 text-xs mb-4"><em>Nota: Hacé un clic fuera del cuadro de texto de una celda para entrar en Modo Comando (el borde cambiará de color) antes de presionar estas teclas:</em></p>
+            <h2 class="text-xl font-bold text-slate-900 mb-3 text-center md:text-left">⌨️ Comandos Universales (Modo Comando)</h2>
+            <p class="text-slate-600 text-xs mb-4 text-center md:text-left">
+                <em>Nota: Hacé un clic fuera del cuadro de texto de una celda para entrar en Modo Comando (el borde cambiará de color) antes de presionar estas teclas:</em>
+            </p>
             
-            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white next-table">
                 <table class="min-w-full divide-y divide-slate-200 text-xs md:text-sm">
                     <thead class="bg-slate-950 text-white">
                         <tr>
@@ -66,7 +74,7 @@
         </section>
 
         <section class="space-y-4">
-            <h2 class="text-xl font-bold text-slate-900 mb-1">💡 Funcionalidades del IDE que tenés que usar</h2>
+            <h2 class="text-xl font-bold text-slate-900 mb-1 text-center md:text-left">💡 Funcionalidades del IDE que tenés que usar</h2>
             
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <span class="font-bold text-slate-900 text-sm block mb-1">🕵️‍♂️ El panel de variables en caliente</span>
@@ -84,7 +92,7 @@
         </section>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
+    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto px-4">
         <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
         <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
     </footer>

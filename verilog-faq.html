@@ -8,20 +8,26 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans flex flex-col min-h-screen">
 
-    <nav class="bg-slate-900 text-white p-4 shadow-md">
-        <div class="max-w-4xl mx-auto flex justify-between text-sm items-center">
+    <nav class="bg-slate-900 text-white p-4 shadow-md px-4">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between text-sm items-center gap-2 text-center">
             <a href="info-verilog.html" class="font-bold text-blue-400 hover:underline">&larr; Volver a la Ruta</a>
-            <span class="text-slate-400 text-xs">Zona de Práctica y Diagnóstico</span>
+            <span class="text-slate-400 text-xs uppercase tracking-wider">Zona de Práctica y Diagnóstico</span>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-4 py-12 flex-grow w-full">
         
         <section class="mb-16">
-            <header class="mb-8">
-                <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Control de Daños</span>
-                <h1 class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Errores Comunes de Principiantes (y cómo los solucioné)</h1>
-                <p class="text-slate-600 text-sm mt-1">Escribir hardware no es como escribir software. Estos son los tropiezos más normales en la fase inicial y la estrategia real para dejarlos atrás.</p>
+            <header class="mb-8 text-center md:text-left">
+                <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                    Control de Daños
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight break-words">
+                    Errores Comunes de Principiantes (y cómo los solucioné)
+                </h1>
+                <p class="text-slate-600 text-sm mt-1 max-w-2xl mx-auto md:mx-0">
+                    Escribir hardware no es como escribir software. Estos son los tropiezos más normales en la fase inicial y la estrategia real para dejarlos atrás.
+                </p>
             </header>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -50,7 +56,7 @@
                     </div>
                     <div class="bg-slate-50 p-3 rounded-lg mt-4 border-l-4 border-emerald-500">
                         <span class="text-[10px] font-bold text-emerald-700 block uppercase tracking-wider">La Solución:</span>
-                        <p class="text-[11px] text-slate-600">Fuerza a tu diseño a usar bloques modulares y reutilizables. Cada módulo de Verilog debe encargarse de una única función bien definida (un módulo exclusivo para la ALU, otro para el PC, otro para la memoria) e interconectarlos en un archivo Top.</p>
+                        <p class="text-[11px] text-slate-600">Fuerza a tu design a usar bloques modulares y reutilizables. Cada módulo de Verilog debe encargarse de una única función bien definida (un módulo exclusivo para la ALU, otro para el PC, otro para la memoria) e interconectarlos en un archivo Top.</p>
                     </div>
                 </div>
 
@@ -86,10 +92,16 @@
         </section>
 
         <section>
-            <header class="mb-8">
-                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Ruta Práctica</span>
-                <h2 class="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">Ideas de Pequeños Proyectos para Principiantes</h2>
-                <p class="text-slate-600 text-sm mt-1">La mejor forma de prepararse para trabajar en este campo es construyendo. Estos proyectos están ordenados para mejorar tus habilidades de programación paso a paso:</p>
+            <header class="mb-8 text-center md:text-left">
+                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                    Ruta Práctica
+                </span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2 tracking-tight break-words">
+                    Ideas de Pequeños Proyectos para Principiantes
+                </h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-2xl mx-auto md:mx-0">
+                    La mejor forma de prepararse para trabajar en este campo es construyendo. Estos proyectos están ordenados para mejorar tus habilidades de programación paso a paso:
+                </p>
             </header>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -114,65 +126,4 @@
 
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
                     <span class="text-xs font-bold text-blue-600 block mb-1">Señales Moduladas</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">⚡ Generador PWM</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Circuito con ciclo de trabajo ajustable, ideal para el control de velocidad de motores o brillo LED.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Comunicaciones</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">📡 Transmisor/Receptor UART</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Dominio de los conceptos básicos de comunicación serial para enviar y recibir datos byte a byte.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Registros / Datos</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">📦 Registro de Desplazamiento</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Manejo de datos de paralelo a serie y viceversa usando un banco de 8 bits flanqueado.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Conversión de Datos</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">🔢 Convertidor Binario a BCD</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Formateo de datos numéricos complejos esenciales para controlar sistemas de visualización de 7 segmentos.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Contadores</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">⏱️ Cronómetro Digital</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Seguimiento preciso del tiempo discreto basado en un sistema de contadores en cascada.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Patrones / FSM</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">🔍 Detector de Secuencias</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Detección de patrones binarios específicos dentro de un flujo continuo de entrada serial.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Visualización</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">📺 Matriz de Desplazamiento LED</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Lógica compleja de control dinámico para mover caracteres a través de un panel de diodos.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Almacenamiento</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">💾 Módulo de Memoria RAM/ROM</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Estructura fundamental de lectura y escritura síncrona para almacenamiento interno en FPGA.</p>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 transition">
-                    <span class="text-xs font-bold text-blue-600 block mb-1">Filtros de Entrada</span>
-                    <h4 class="font-bold text-sm text-slate-900 mb-1">🛡️ Circuitos Debounce</h4>
-                    <p class="text-slate-500 text-[11px] leading-relaxed">Manejo limpio de entradas mecánicas (botones de placas) eliminando el ruido eléctrico destructivo.</p>
-                </div>
-
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-slate-900 text-slate-400 text-center py-8 text-xs border-t border-slate-800 space-y-2 mt-auto">
-        <p>Desarrollado para la comunidad de desarrollo de software y arquitectura de computadoras. 2026.</p>
-        <p class="font-medium tracking-wide text-slate-300">Creado por <span class="text-blue-400 font-semibold">Vera Nery</span></p>
-    </footer>
-</body>
-</html>
+                    <h
